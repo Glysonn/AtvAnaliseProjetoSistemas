@@ -4,16 +4,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace AttAnalise.Models
 {
     public class Usuario
     {
-        protected int Id { get; set; }
-        private string Nome { get; set; }
-        private string Email { get; set; }
-        private string Senha { get; set; }
-        private TipoUsuario TipoUsuario { get; set; }
+        public int Id { get => _Id; set => _Id = value; }
+        public string Nome { get => _Nome; set => _Nome= value; }
+        public string Email { get => _Email; set => _Email = value; }
+        public string Senha { get => _Senha; set => _Senha = value; }
+        public TipoUsuario TipoUsuario { get => _TipoUsuario; set => _TipoUsuario = value; }
+        
+        
+        private int _Id { get; set; }
+        private string _Nome { get; set; }
+        private string _Email { get; set; }
+        private string _Senha { get; set; }
+        private TipoUsuario _TipoUsuario { get; set; }
 
         public Usuario(int id, string nome, string email, string senha)
         {
@@ -22,9 +30,6 @@ namespace AttAnalise.Models
             this.Email = email;
             this.Senha = CriptografarSenha(senha);
         }
-
-        public void descricao(){Console.WriteLine($"id: {Id}\nnome: {Nome}\nemail: {Email}\nsenha: {Senha}");}
-
 
         // a criptografia não é das mais efetivas porém servirá para demonstração
         private string CriptografarSenha(string senha)
