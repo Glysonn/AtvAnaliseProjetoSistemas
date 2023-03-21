@@ -26,10 +26,10 @@ namespace AttAnalise.Models
         public void descricao(){Console.WriteLine($"id: {Id}\nnome: {Nome}\nemail: {Email}\nsenha: {Senha}");}
 
 
-        // a criptografia não é muito efetiva e esse método é obsoleto, porém servirá só como demonstração
+        // a criptografia não é das mais efetivas porém servirá para demonstração
         private string CriptografarSenha(string senha)
         {
-            var sha256 = new SHA256Managed();
+            using var sha256 = SHA256.Create();
             var bytes = Encoding.UTF8.GetBytes(senha);
             var hash = sha256.ComputeHash(bytes);
             return Convert.ToBase64String(hash);
