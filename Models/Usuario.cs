@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Text;
-using Newtonsoft.Json;
+
+using AttAnalise.Enums;
 
 namespace AttAnalise.Models
 {

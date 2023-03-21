@@ -1,4 +1,4 @@
-namespace AttAnalise.Models
+namespace AttAnalise.Enums
 {
     public enum TipoUsuario
     {
