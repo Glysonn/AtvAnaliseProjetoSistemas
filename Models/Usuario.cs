@@ -20,12 +20,13 @@ namespace AttAnalise.Models
         private string _Senha { get; set; }
         private TipoUsuario _TipoUsuario { get; set; }
 
-        public Usuario(int id, string nome, string email, string senha)
+        public Usuario(int id, string nome, string email, string senha, TipoUsuario tipoUsuario)
         {
             this.Id = id;
             this.Nome = nome;
             this.Email = email;
             this.Senha = CriptografarSenha(senha);
+            this.TipoUsuario = tipoUsuario;
         }
 
         // a criptografia não é das mais efetivas porém servirá para demonstração
