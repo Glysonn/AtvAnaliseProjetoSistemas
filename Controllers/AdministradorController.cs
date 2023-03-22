@@ -63,5 +63,37 @@ namespace AttAnalise.Controllers
                 return StatusCode(500, new {Error = ex.Message, Mensagem = "Aconteceu um erro interno no servidor!"});
             }
         }
+
+        // MÉTODOS HTTP POST
+        [HttpPost]
+        public IActionResult AdicionarAdministrador(Administrador adm)
+        {
+            try
+            {
+                // verifica se há algo de errado com a conexão do banco de dados
+                if (!_context.Database.CanConnect())
+                    return Problem( detail: "Houve um problema com a conexão ao banco de dados",
+                                    statusCode: StatusCodes.Status400BadRequest,
+                                    title: "Bad Request");
+
+                // faz validação simples dos dados de entrada
+                if (!adm.ValidarDados())
+                {
+                    return BadRequest("Todos os campos são obrigatórios!");
+                }
+
+                Administrador novoAdministrador = new Administrador(adm.Nome, adm.Email, adm.Senha);
+
+                _context.Administradores.Add(novoAdministrador);
+                _context.SaveChanges();
+                
+                return Created("Usuario Administrador cadastrado!", novoAdministrador);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = ex.Message, Mensagem = "Aconteceu um erro interno no servidor!"});
+            }
+        }
+
     }
 }
