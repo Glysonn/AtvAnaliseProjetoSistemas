@@ -112,15 +112,18 @@ namespace AttAnalise.Controllers
                 {
                     return NotFound($"Administrador de ID {id} não se encontra no sistema!");
                 }
-                
-                if (!adm.ValidarDados())
-                {
-                    return BadRequest("Todos os campos são obrigatórios!");
-                }
 
-                AdministradorBanco.Nome = adm.Nome;
-                AdministradorBanco.Email = adm.Email;
-                AdministradorBanco.Senha = adm.Senha;
+                // aqui é verificado se o campo do corpo da requisição é vazio. Caso seja vazio, o dado tem que se mater o mesmo
+                if (!String.IsNullOrEmpty(adm.Nome))
+                {
+                    AdministradorBanco.Nome = adm.Nome;
+                } if (!String.IsNullOrEmpty(adm.Email))
+                {
+                    AdministradorBanco.Email = adm.Email;
+                } if (!String.IsNullOrEmpty(adm.Senha))
+                {
+                    AdministradorBanco.Senha = adm.Senha;
+                }
 
                 _context.Administradores.Update(AdministradorBanco);
                 _context.SaveChanges();
