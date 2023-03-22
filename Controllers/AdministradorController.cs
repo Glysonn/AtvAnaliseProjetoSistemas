@@ -36,7 +36,7 @@ namespace AttAnalise.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new {Error = ex.Message, Mensagem = "Aconteceu um erro interno no servidor!"});
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
             }
         }
 
@@ -60,7 +60,7 @@ namespace AttAnalise.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new {Error = ex.Message, Mensagem = "Aconteceu um erro interno no servidor!"});
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
             }
         }
 
@@ -91,13 +91,13 @@ namespace AttAnalise.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new {Error = ex.Message, Mensagem = "Aconteceu um erro interno no servidor!"});
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
             }
         }
 
         // MÉTODOS HTTP PUT
         [HttpPut("{id}")]
-        public IActionResult AtualizarAdministrador (int id, [FromBody]Administrador adm)
+        public IActionResult AtualizarAdministrador (int id, string senhaAtual, [FromBody]Administrador adm)
         {
             try
             {
@@ -133,7 +133,7 @@ namespace AttAnalise.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new {Error = ex.Message, Mensagem = "Aconteceu um erro interno no servidor!"});
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
             }
         }
 
@@ -159,7 +159,7 @@ namespace AttAnalise.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new {Error = ex.Message, Mensagem = "Aconteceu um erro interno no servidor!"});
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
             }
         }
     }
