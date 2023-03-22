@@ -66,5 +66,10 @@ namespace AttAnalise.Models
             }
             this.Senha = CriptografarSenha(novaSenha);
         }
+
+        public bool ValidarDados()
+        {
+            return !(String.IsNullOrEmpty(Nome) || String.IsNullOrEmpty(Email) || String.IsNullOrEmpty(Senha));
+        }
     }
 }
