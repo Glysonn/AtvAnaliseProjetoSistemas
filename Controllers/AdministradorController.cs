@@ -95,5 +95,44 @@ namespace AttAnalise.Controllers
             }
         }
 
+        // MÉTODOS HTTP PUT
+        [HttpPut("{id}")]
+        public IActionResult AtualizarAdministrador (int id, [FromBody]Administrador adm)
+        {
+            try
+            {
+                // verifica se há algo de errado com a conexão do banco de dados
+                if (!_context.Database.CanConnect())
+                return Problem( detail: "Houve um problema com a conexão ao banco de dados",
+                                statusCode: StatusCodes.Status400BadRequest,
+                                title: "Bad Request");
+
+                var AdministradorBanco = _context.Administradores.SingleOrDefault(a => a.Id == id);
+                if (AdministradorBanco == null)
+                {
+                    return NotFound($"Administrador de ID {id} não se encontra no sistema!");
+                }
+                
+                if (!adm.ValidarDados())
+                {
+                    return BadRequest("Todos os campos são obrigatórios!");
+                }
+
+                AdministradorBanco.Nome = adm.Nome;
+                AdministradorBanco.Email = adm.Email;
+                AdministradorBanco.Senha = adm.Senha;
+
+                _context.Administradores.Update(AdministradorBanco);
+                _context.SaveChanges();
+
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = ex.Message, Mensagem = "Aconteceu um erro interno no servidor!"});
+            }
+        }
+
     }
 }
