@@ -25,8 +25,16 @@ namespace AttAnalise.Models
             this.Id = id;
             this.Nome = nome;
             this.Email = email;
-            this.Senha = CriptografarSenha(senha);
             this.TipoUsuario = tipoUsuario;
+
+            // caso não seja feita a validação aqui, a senha vazia (caractere " ") pode ser encriptografada,
+            // o que complicará em validações futuras
+            if (!String.IsNullOrEmpty(senha))
+            {
+                this.Senha = CriptografarSenha(senha);
+            }
+            
+            
         }
 
         // a criptografia não é das mais efetivas porém servirá para demonstração
