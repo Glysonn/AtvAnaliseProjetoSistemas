@@ -75,5 +75,35 @@ namespace AttAnalise.Controllers
             }
         }
 
+        // MÉTODOS HTTP POST
+        [HttpPost]
+        public IActionResult AdicionarCliente(Cliente cliente)
+        {
+            try
+            {
+                // verifica se há algo de errado com a conexão do banco de dados
+                var responseBanco = ChecarConexaoBanco();
+                if (responseBanco != null)
+                    return responseBanco;
+
+                // faz validação simples dos dados de entrada
+                if (!cliente.ValidarDados())
+                {
+                    return BadRequest("Todos os campos são obrigatórios!");
+                }
+
+                Cliente NovoCliente = new Cliente(cliente.Nome, cliente.Email, cliente.Senha);
+
+                _context.Clientes.Add(NovoCliente);
+                _context.SaveChanges();
+                
+                return Created("Cliente cadastrado!", NovoCliente);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
+            }
+        }
+        
     }
 }
