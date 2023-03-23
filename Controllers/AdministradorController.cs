@@ -15,6 +15,20 @@ namespace AttAnalise.Controllers
             _context = context;
         }
 
+        // método para checar a conexão com o banco de dados (caso não seja possível, retorna um error)
+        private IActionResult ChecarConexaoBanco()
+        {
+            if (!_context.Database.CanConnect())
+            {
+                return Problem(
+                    detail: "Houve um problema com a conexão ao banco de dados",
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    title: "Internal Server Error");
+            }
+            return null;
+        }
+
+
         // MÉTODOS HTTP GET
         [HttpGet]
         public IActionResult GetAdministradores()
@@ -22,10 +36,9 @@ namespace AttAnalise.Controllers
             try
             {
                 // verifica se há algo de errado com a conexão do banco de dados
-                if (!_context.Database.CanConnect())
-                    return Problem( detail: "Erro: O banco de dados não foi encontrado!",
-                                    statusCode: StatusCodes.Status400BadRequest,
-                                    title: "Bad Request");
+                var responseBanco = ChecarConexaoBanco();
+                if (responseBanco != null)
+                    return responseBanco;
                 
                 var Administradores = _context.Administradores.ToList();
 
@@ -46,10 +59,9 @@ namespace AttAnalise.Controllers
             try
             {
                 // verifica se há algo de errado com a conexão do banco de dados
-                if (!_context.Database.CanConnect())
-                    return Problem( detail: "Houve um problema com a conexão ao banco de dados",
-                                    statusCode: StatusCodes.Status400BadRequest,
-                                    title: "Bad Request");
+                var responseBanco = ChecarConexaoBanco();
+                if (responseBanco != null)
+                    return responseBanco;
                 
                 var AdministradorBanco = _context.Administradores.SingleOrDefault(a => a.Id == id);
 
@@ -71,10 +83,9 @@ namespace AttAnalise.Controllers
             try
             {
                 // verifica se há algo de errado com a conexão do banco de dados
-                if (!_context.Database.CanConnect())
-                    return Problem( detail: "Houve um problema com a conexão ao banco de dados",
-                                    statusCode: StatusCodes.Status400BadRequest,
-                                    title: "Bad Request");
+                var responseBanco = ChecarConexaoBanco();
+                if (responseBanco != null)
+                    return responseBanco;
 
                 // faz validação simples dos dados de entrada
                 if (!adm.ValidarDados())
@@ -102,10 +113,9 @@ namespace AttAnalise.Controllers
             try
             {
                 // verifica se há algo de errado com a conexão do banco de dados
-                if (!_context.Database.CanConnect())
-                return Problem( detail: "Houve um problema com a conexão ao banco de dados",
-                                statusCode: StatusCodes.Status400BadRequest,
-                                title: "Bad Request");
+                var responseBanco = ChecarConexaoBanco();
+                if (responseBanco != null)
+                    return responseBanco;
 
                 var AdministradorBanco = _context.Administradores.SingleOrDefault(a => a.Id == id);
                 if (AdministradorBanco == null)
@@ -144,10 +154,9 @@ namespace AttAnalise.Controllers
             try
             {
                 // verifica se há algo de errado com a conexão do banco de dados
-                if (!_context.Database.CanConnect())
-                    return Problem( detail: "Houve um problema com a conexão ao banco de dados",
-                                    statusCode: StatusCodes.Status400BadRequest,
-                                    title: "Bad Request");
+                var responseBanco = ChecarConexaoBanco();
+                if (responseBanco != null)
+                    return responseBanco;
 
                 var AdministradorBanco = _context.Administradores.SingleOrDefault(a => a.Id == id);
                 if (AdministradorBanco == null)
