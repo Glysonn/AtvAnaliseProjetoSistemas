@@ -104,6 +104,47 @@ namespace AttAnalise.Controllers
                 return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
             }
         }
+
+        // MÉTODOS HTTP PUT
+        [HttpPut("{id}")]
+        public IActionResult AtualizarCliente (int id, string senhaAtual, [FromBody]Cliente cliente)
+        {
+            try
+            {
+                // verifica se há algo de errado com a conexão do banco de dados
+                var responseBanco = ChecarConexaoBanco();
+                if (responseBanco != null)
+                    return responseBanco;
+
+                var ClienteBanco = _context.Clientes.SingleOrDefault(a => a.Id == id);
+                if (ClienteBanco == null)
+                {
+                    return NotFound($"Cliente de ID {id} não se encontra no sistema!");
+                }
+
+                // aqui é verificado se o campo do corpo da requisição é vazio. Caso seja vazio, o dado tem que se mater o mesmo
+                if (!String.IsNullOrEmpty(cliente.Nome))
+                {
+                    ClienteBanco.Nome = cliente.Nome;
+                } if (!String.IsNullOrEmpty(cliente.Email))
+                {
+                    ClienteBanco.Email = cliente.Email;
+                } if (!String.IsNullOrEmpty(cliente.Senha))
+                {
+                    ClienteBanco.Senha = cliente.Senha;
+                }
+
+                _context.Clientes.Update(ClienteBanco);
+                _context.SaveChanges();
+
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
+            }
+        }
         
     }
 }
