@@ -145,6 +145,31 @@ namespace AttAnalise.Controllers
                 return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
             }
         }
+
+        // MÉTODOS HTTP DELETE
+        [HttpDelete("{id}")]
+        public IActionResult DeletarCliente(int id)
+        {
+            try
+            {
+                // verifica se há algo de errado com a conexão do banco de dados
+                var responseBanco = ChecarConexaoBanco();
+                if (responseBanco != null)
+                    return responseBanco;
+
+                var ClienteBanco = _context.Clientes.SingleOrDefault(a => a.Id == id);
+                if (ClienteBanco == null)
+                    return NotFound($"O cliente de ID {id} não se encontra no sistema!");
+                
+                _context.Remove(ClienteBanco);
+                _context.SaveChanges();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
+            }
+        }
         
     }
 }
