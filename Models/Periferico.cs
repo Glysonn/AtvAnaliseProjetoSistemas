@@ -6,7 +6,7 @@ namespace AttAnalise.Models
         private bool _IsGamer { get; set; }
         
         
-        public Periferico(int codigo, string nome, string tipo, string marca, string modelo, decimal valor, bool isGamer) : base (codigo, nome, tipo, marca, modelo, valor)
+        public Periferico(string nome, string tipo, string marca, string modelo, decimal valor, bool isGamer) : base (0, nome, tipo, marca, modelo, valor)
         {
             this.IsGamer = isGamer;
         }
