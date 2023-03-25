@@ -118,15 +118,13 @@ namespace AttAnalise.Controllers
 
                 // aqui é verificado se o campo do corpo da requisição é vazio. Caso seja vazio, o dado tem que se mater o mesmo
                 if (!String.IsNullOrEmpty(cliente.Nome))
-                {
                     ClienteBanco.Nome = cliente.Nome;
-                } if (!String.IsNullOrEmpty(cliente.Email))
-                {
+
+                if (!String.IsNullOrEmpty(cliente.Email))
                     ClienteBanco.Email = cliente.Email;
-                } if (!String.IsNullOrEmpty(cliente.Senha))
-                {
+
+                if (!String.IsNullOrEmpty(cliente.Senha))
                     ClienteBanco.Senha = cliente.Senha;
-                }
 
                 _context.Clientes.Update(ClienteBanco);
                 _context.SaveChanges();
