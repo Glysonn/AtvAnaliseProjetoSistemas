@@ -30,6 +30,7 @@ namespace AttAnalise.Controllers
         {
             try
             {
+                // verifica se há algo de errado com a conexão do banco de dados
                 var responseBanco = ChecarConexaoBanco();
                 if (responseBanco != null)
                     return responseBanco;
@@ -62,6 +63,34 @@ namespace AttAnalise.Controllers
                     return NotFound($"Periférico de ID {id} não existe.");
                 
                 return Ok(PerifericoBanco);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!",
+                                            Mensagem = ex.Message});
+            }
+        }
+
+        [HttpPost]
+        public IActionResult testePost([FromBody] Periferico pf)
+        {
+            try
+            {
+                var responseBanco = ChecarConexaoBanco();
+                if (responseBanco != null)
+                    return responseBanco;
+
+                Periferico NovoPeriferico = new Periferico(pf.Nome, pf.Tipo, pf.Marca, pf.Modelo, pf.Valor, pf.IsGamer);
+
+                _context.Perifericos.Add(NovoPeriferico);
+                _context.SaveChanges();
+
+                return Created("Produto cadastrado com sucesso!", NovoPeriferico);
+            }
+            catch (ArgumentException argEx)
+            {
+                return StatusCode(400, new {Error= "Houve um erro com sua requisição. Por favor, verifique os seus dados!",
+                                            Mensagem = argEx.Message});
             }
             catch (Exception ex)
             {
