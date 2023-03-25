@@ -101,7 +101,7 @@ namespace AttAnalise.Controllers
 
         // MÉTODOS HTTP PUT
         [HttpPut("{id}")]
-        public IActionResult AtualizarCliente (int id, string senhaAtual, [FromBody]Cliente cliente)
+        public IActionResult AtualizarClienteById (int id, string senhaAtual, [FromBody]Cliente cliente)
         {
             try
             {
@@ -142,7 +142,7 @@ namespace AttAnalise.Controllers
 
         // MÉTODOS HTTP DELETE
         [HttpDelete("{id}")]
-        public IActionResult DeletarCliente(int id)
+        public IActionResult DeletarClienteById(int id)
         {
             try
             {
