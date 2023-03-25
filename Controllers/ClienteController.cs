@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using AttAnalise.Context;
 using AttAnalise.Models;
+using AttAnalise.Models.Requests;
 
 namespace AttAnalise.Controllers
 {
@@ -77,7 +78,7 @@ namespace AttAnalise.Controllers
 
         // MÉTODOS HTTP POST
         [HttpPost]
-        public IActionResult AdicionarCliente(Cliente cliente)
+        public IActionResult AdicionarCliente([FromBody]UsuarioRequest cliente)
         {
             try
             {
@@ -93,6 +94,10 @@ namespace AttAnalise.Controllers
                 
                 return Created("Cliente cadastrado!", NovoCliente);
             }
+            catch (ArgumentException argEx)
+            {
+                return BadRequest(new {Error = "Aconteceu um erro com os dados enviados!", Mensagem = argEx.Message});
+            }
             catch (Exception ex)
             {
                 return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
@@ -101,7 +106,7 @@ namespace AttAnalise.Controllers
 
         // MÉTODOS HTTP PUT
         [HttpPut("{id}")]
-        public IActionResult AtualizarClienteById (int id, string senhaAtual, [FromBody]Cliente cliente)
+        public IActionResult AtualizarClienteById (int id, string senhaAtual, [FromBody]UsuarioRequest cliente)
         {
             try
             {
@@ -116,7 +121,7 @@ namespace AttAnalise.Controllers
                     return NotFound($"Cliente de ID {id} não se encontra no sistema!");
                 }
 
-                // aqui é verificado se o campo do corpo da requisição é vazio. Caso seja vazio, o dado tem que se mater o mesmo
+                // aqui é verificado se o campo do corpo da requisição é vazio. Caso seja, o valor permanece o mesmo
                 if (!String.IsNullOrEmpty(cliente.Nome))
                     ClienteBanco.Nome = cliente.Nome;
 
@@ -131,6 +136,10 @@ namespace AttAnalise.Controllers
 
                 return NoContent();
 
+            }
+            catch (ArgumentException argEx)
+            {
+                return BadRequest(new {Error = "Aconteceu um erro com os dados enviados!", Mensagem = argEx.Message});
             }
             catch (Exception ex)
             {
