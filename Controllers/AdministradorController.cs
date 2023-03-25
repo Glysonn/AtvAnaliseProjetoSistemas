@@ -87,12 +87,6 @@ namespace AttAnalise.Controllers
                 if (responseBanco != null)
                     return responseBanco;
 
-                // faz validação simples dos dados de entrada
-                if (!adm.ValidarDados())
-                {
-                    return BadRequest("Todos os campos são obrigatórios!");
-                }
-
                 Administrador novoAdministrador = new Administrador(adm.Nome, adm.Email, adm.Senha);
 
                 _context.Administradores.Add(novoAdministrador);

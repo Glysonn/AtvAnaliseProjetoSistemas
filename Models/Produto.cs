@@ -3,13 +3,56 @@ namespace AttAnalise.Models
     public class Produto
     {
         public int Codigo { get => _Codigo; set => _Codigo = value; }
-        public string Nome { get => _Nome; set => _Nome = value; }
-        public string Tipo { get => _Tipo; set => _Tipo = value; }
-        public string Marca { get => _Marca; set => _Marca = value; }
-        public string Modelo { get => _Modelo; set => _Modelo = value; }
-        public decimal Valor { get => _Valor; set => _Valor = value; }
-        
-        
+        public string Nome
+        {   get => _Nome;
+            set
+            {
+                if(String.IsNullOrEmpty(value))
+                    throw new ArgumentException("O nome não pode ser vazio! Por favor, preencha o campo corretamente");
+                else
+                    _Nome = value;
+            }
+        }
+        public string Tipo
+        {   get => _Tipo;
+            set
+            {
+                if(String.IsNullOrEmpty(value))
+                    throw new ArgumentException("O tipo não pode ser vazio! Por favor, preencha o campo corretamente");
+                else
+                    _Tipo = value;
+            }
+        }
+        public string Marca
+        {   get => _Marca;
+            set
+            {
+                if(String.IsNullOrEmpty(value))
+                    throw new ArgumentException("A marca não pode ser vazia! Por favor, preencha o campo corretamente");
+                else
+                    _Marca = value;
+            }
+        }
+        public string Modelo
+        {   get => _Modelo;
+            set
+            {
+                if(String.IsNullOrEmpty(value))
+                    throw new ArgumentException("O modelo não pode ser vazio! Por favor, preencha o campo corretamente");
+                else
+                    _Modelo = value;
+            }
+        }
+        public decimal Valor
+        {   get => _Valor; 
+            set
+            {
+                if (value <= 0)
+                    throw new ArgumentException("O valor do produto não pode ser menor ou igual a 0 (zero).");
+                else
+                    _Valor = value;
+            }
+        }
         
         
         private int _Codigo { get; set; }

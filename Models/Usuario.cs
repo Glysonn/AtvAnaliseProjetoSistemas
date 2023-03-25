@@ -8,9 +8,36 @@ namespace AttAnalise.Models
     public class Usuario
     {
         public int Id { get => _Id; set => _Id = value; }
-        public string Nome { get => _Nome; set => _Nome= value; }
-        public string Email { get => _Email; set => _Email = value; }
-        public string Senha { get => _Senha; set => _Senha = value; }
+        public string Nome
+        {   get => _Nome;
+            set
+            {
+                if(String.IsNullOrEmpty(value) || String.IsNullOrWhiteSpace(value))
+                    throw new ArgumentException("O nome não pode ser vazio ou conter somente espaços em branco! Por favor, preencha o campo corretamente");
+                else
+                    _Nome = value;
+            }
+        }
+        public string Email
+        {   get => _Email;
+            set
+            {
+                if(String.IsNullOrEmpty(value) || String.IsNullOrWhiteSpace(value))
+                    throw new ArgumentException("O email não pode ser vazio ou conter somente espaços em branco! Por favor, preencha o campo corretamente");
+                else
+                    _Email = value;
+            }
+        }
+        public string Senha
+        {   get => _Senha;
+            set
+            {
+                if(String.IsNullOrEmpty(value) || String.IsNullOrWhiteSpace(value))
+                    throw new ArgumentException("A senha não pode ser vazia ou conter somente espaços em branco! Por favor, preencha o campo corretamente");
+                else
+                    _Senha = CriptografarSenha(value);
+            }
+        }
         public TipoUsuario TipoUsuario { get => _TipoUsuario; set => _TipoUsuario = value; }
         
         
@@ -26,15 +53,6 @@ namespace AttAnalise.Models
             this.Nome = nome;
             this.Email = email;
             this.TipoUsuario = tipoUsuario;
-
-            // caso não seja feita a validação aqui, a senha vazia (caractere " ") pode ser encriptografada,
-            // o que complicará em validações futuras
-            if (!String.IsNullOrEmpty(senha))
-            {
-                this.Senha = CriptografarSenha(senha);
-            }
-            
-            
         }
 
         // a criptografia não é das mais efetivas porém servirá para demonstração
@@ -67,9 +85,5 @@ namespace AttAnalise.Models
             this.Senha = CriptografarSenha(novaSenha);
         }
 
-        public bool ValidarDados()
-        {
-            return !(String.IsNullOrEmpty(Nome) || String.IsNullOrEmpty(Email) || String.IsNullOrEmpty(Senha));
-        }
     }
 }

@@ -86,12 +86,6 @@ namespace AttAnalise.Controllers
                 if (responseBanco != null)
                     return responseBanco;
 
-                // faz validação simples dos dados de entrada
-                if (!cliente.ValidarDados())
-                {
-                    return BadRequest("Todos os campos são obrigatórios!");
-                }
-
                 Cliente NovoCliente = new Cliente(cliente.Nome, cliente.Email, cliente.Senha);
 
                 _context.Clientes.Add(NovoCliente);
