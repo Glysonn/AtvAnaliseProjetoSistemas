@@ -52,6 +52,7 @@ namespace AttAnalise.Models
             this.Id = id;
             this.Nome = nome;
             this.Email = email;
+            this.Senha = senha;
             this.TipoUsuario = tipoUsuario;
         }
 
