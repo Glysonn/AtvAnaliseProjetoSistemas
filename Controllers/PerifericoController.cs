@@ -48,5 +48,27 @@ namespace AttAnalise.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetPerifericosById(int id)
+        {
+            try
+            {
+                var responseBanco = ChecarConexaoBanco();
+                if(responseBanco != null)
+                    return responseBanco;
+
+                var PerifericoBanco = _context.Perifericos.SingleOrDefault(a => a.Codigo == id);
+                if(PerifericoBanco == null)
+                    return NotFound($"Periférico de ID {id} não existe.");
+                
+                return Ok(PerifericoBanco);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!",
+                                            Mensagem = ex.Message});
+            }
+        }
+
     }
 }
