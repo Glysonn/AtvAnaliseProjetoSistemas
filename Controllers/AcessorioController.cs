@@ -150,5 +150,32 @@ namespace AttAnalise.Controllers
 
         }
 
+        [HttpDelete ("{codigo}")]
+        public IActionResult DeletarAcessorioById(int codigo)
+        {
+            try
+            {
+                var responseBanco = ChecarConexaoBanco();
+                if (responseBanco != null)
+                    return responseBanco;
+                
+                var AcessorioBanco = _context.Acessorios.SingleOrDefault(a => a.Codigo == codigo);
+                if (AcessorioBanco == null)
+                    return NotFound($"O acessório de código {codigo} não se encontra no sistema!");
+                
+                _context.Acessorios.Remove(AcessorioBanco);
+                _context.SaveChanges();
+
+                return NoContent();
+            }
+            catch (ArgumentException argEx)
+            {
+                return BadRequest(new {Error = "Aconteceu um erro com os dados enviados!", Mensagem = argEx.Message});
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
+            }
+        }
     }
 }
