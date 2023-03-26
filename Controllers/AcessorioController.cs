@@ -37,7 +37,7 @@ namespace AttAnalise.Controllers
                 if (responseBanco != null)
                     return responseBanco;
 
-                var AcessoriosBanco = _context.Pecas.ToList();
+                var AcessoriosBanco = _context.Acessorios.ToList();
 
                 if (!AcessoriosBanco.Any())
                     return NotFound("Não há nenhum acessório cadastrado no sistema!");
@@ -88,7 +88,7 @@ namespace AttAnalise.Controllers
                 _context.Acessorios.Add(NovoAcessorio);
                 _context.SaveChanges();
 
-                return Created("Acessório cadastrado com sucesso!", NovoAcessorio);
+                return Created("Acessorio cadastrado com sucesso!", NovoAcessorio);
             }
             catch (ArgumentException argEx)
             {
@@ -100,6 +100,54 @@ namespace AttAnalise.Controllers
                 return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!",
                                             Mensagem = ex.Message});
             }
+        }
+
+        [HttpPut ("{codigo}")]
+        public IActionResult AtualizarPeca(int codigo, [FromBody] AcessorioRequest acessorio)
+        {
+            try
+            {
+                var responseBanco = ChecarConexaoBanco();
+                if(responseBanco != null)
+                    return responseBanco;
+
+                var AcessorioBanco = _context.Acessorios.SingleOrDefault(a => a.Codigo == codigo);
+                if(AcessorioBanco == null)
+                    return NotFound($"O acessorio de código {codigo} não se encontra no sistema!");
+
+                // aqui é verificado se o campo do corpo da requisição é vazio. Caso seja vazio, o dado tem que se mater o mesmo
+                // a propriedade IsGamer (bool) não precisa de validação pois sempre terá um valor válido (true ou false)
+
+                if (!String.IsNullOrEmpty(acessorio.Nome))
+                    AcessorioBanco.Nome = acessorio.Nome;
+                    
+                if (!String.IsNullOrEmpty(acessorio.Marca))
+                    AcessorioBanco.Marca = acessorio.Marca;
+
+                if (!String.IsNullOrEmpty(acessorio.Modelo))
+                    AcessorioBanco.Modelo = acessorio.Modelo;
+
+                if (!String.IsNullOrEmpty(acessorio.Tipo))
+                    AcessorioBanco.Tipo = acessorio.Tipo;
+
+                // caso seja 0 (valor padrão do tipo Decimal, mantém o mesmo valor)
+                if (acessorio.Valor != 0)
+                    AcessorioBanco.Valor = acessorio.Valor;
+            
+                _context.Acessorios.Update(AcessorioBanco);
+                _context.SaveChanges();
+
+                return NoContent();
+            }
+            catch (ArgumentException argEx)
+            {
+                return BadRequest(new {Error = "Aconteceu um erro com os dados enviados!", Mensagem = argEx.Message});
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
+            }
+
         }
 
     }
