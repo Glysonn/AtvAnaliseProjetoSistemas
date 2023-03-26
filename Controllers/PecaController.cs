@@ -152,5 +152,33 @@ namespace AttAnalise.Controllers
             }
 
         }
+
+        [HttpDelete ("{codigo}")]
+        public IActionResult DeletarPecaById(int codigo)
+        {
+            try
+            {
+                var responseBanco = ChecarConexaoBanco();
+                if (responseBanco != null)
+                    return responseBanco;
+                
+                var PecaBanco = _context.Pecas.SingleOrDefault(a => a.Codigo == codigo);
+                if (PecaBanco == null)
+                    return NotFound($"A peça de código {codigo} não se encontra no sistema!");
+                
+                _context.Pecas.Remove(PecaBanco);
+                _context.SaveChanges();
+
+                return NoContent();
+            }
+            catch (ArgumentException argEx)
+            {
+                return BadRequest(new {Error = "Aconteceu um erro com os dados enviados!", Mensagem = argEx.Message});
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
+            }
+        }
     }
 }
