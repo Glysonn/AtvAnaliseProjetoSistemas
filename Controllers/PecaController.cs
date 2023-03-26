@@ -73,5 +73,34 @@ namespace AttAnalise.Controllers
             }
         }
 
+
+        [HttpPost]
+        public IActionResult AdicionarPeca([FromBody] PecaRequest peca)
+        {
+            try
+            {
+                var responseBanco = ChecarConexaoBanco();
+                if (responseBanco != null)
+                    return responseBanco;
+
+                Peca NovaPeca = new Peca(peca.Nome, peca.Tipo, peca.Marca, peca.Modelo, peca.Valor, peca.Arquitetura);
+
+                _context.Pecas.Add(NovaPeca);
+                _context.SaveChanges();
+
+                return Created("Produto cadastrado com sucesso!", NovaPeca);
+            }
+            catch (ArgumentException argEx)
+            {
+                return StatusCode(400, new {Error= "Houve um erro com sua requisição. Por favor, verifique os seus dados!",
+                                            Mensagem = argEx.Message});
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!",
+                                            Mensagem = ex.Message});
+            }
+        }
+        
     }
 }
