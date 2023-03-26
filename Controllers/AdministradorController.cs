@@ -94,6 +94,10 @@ namespace AttAnalise.Controllers
                 
                 return Created("Usuario Administrador cadastrado!", novoAdministrador);
             }
+            catch (ArgumentException argEx)
+            {
+                return BadRequest(new {Error = "Aconteceu um erro com os dados enviados!", Mensagem = argEx.Message});
+            }
             catch (Exception ex)
             {
                 return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
@@ -132,6 +136,10 @@ namespace AttAnalise.Controllers
 
                 return NoContent();
 
+            }
+            catch (ArgumentException argEx)
+            {
+                return BadRequest(new {Error = "Aconteceu um erro com os dados enviados!", Mensagem = argEx.Message});
             }
             catch (Exception ex)
             {
