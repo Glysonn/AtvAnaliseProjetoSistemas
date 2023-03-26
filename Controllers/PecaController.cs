@@ -101,6 +101,56 @@ namespace AttAnalise.Controllers
                                             Mensagem = ex.Message});
             }
         }
-        
+
+        [HttpPut ("{codigo}")]
+        public IActionResult AtualizarPeca(int codigo, [FromBody] PecaRequest peca)
+        {
+            try
+            {
+                var responseBanco = ChecarConexaoBanco();
+                if(responseBanco != null)
+                    return responseBanco;
+
+                var PecaBanco = _context.Pecas.SingleOrDefault(a => a.Codigo == codigo);
+                if(PecaBanco == null)
+                    return NotFound($"A peça de código {codigo} não se encontra no sistema!");
+
+                // aqui é verificado se o campo do corpo da requisição é vazio. Caso seja vazio, o dado tem que se mater o mesmo
+                // a propriedade IsGamer (bool) não precisa de validação pois sempre terá um valor válido (true ou false)
+
+                if (!String.IsNullOrEmpty(peca.Nome))
+                    PecaBanco.Nome = peca.Nome;
+                    
+                if (!String.IsNullOrEmpty(peca.Marca))
+                    PecaBanco.Marca = peca.Marca;
+
+                if (!String.IsNullOrEmpty(peca.Modelo))
+                    PecaBanco.Modelo = peca.Modelo;
+
+                if (!String.IsNullOrEmpty(peca.Tipo))
+                    PecaBanco.Tipo = peca.Tipo;
+                
+                if(!String.IsNullOrEmpty(peca.Arquitetura))
+                    PecaBanco.Arquitetura = peca.Arquitetura;
+
+                // caso seja 0 (valor padrão do tipo Decimal, mantém o mesmo valor)
+                if (peca.Valor != 0)
+                    PecaBanco.Valor = peca.Valor;
+            
+                _context.Pecas.Update(PecaBanco);
+                _context.SaveChanges();
+
+                return NoContent();
+            }
+            catch (ArgumentException argEx)
+            {
+                return BadRequest(new {Error = "Aconteceu um erro com os dados enviados!", Mensagem = argEx.Message});
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
+            }
+
+        }
     }
 }
