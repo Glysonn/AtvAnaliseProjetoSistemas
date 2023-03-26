@@ -5,7 +5,7 @@ using AttAnalise.Enums;
 
 namespace AttAnalise.Models
 {
-    public class Usuario
+    public abstract class Usuario
     {
         public int Id { get => _Id; set => _Id = value; }
         public string Nome

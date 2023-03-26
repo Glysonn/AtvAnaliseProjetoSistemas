@@ -1,6 +1,6 @@
 namespace AttAnalise.Models
 {
-    public class Produto
+    public abstract class Produto
     {
         public int Codigo { get => _Codigo; set => _Codigo = value; }
         public string Nome
