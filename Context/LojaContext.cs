@@ -14,6 +14,7 @@ namespace AttAnalise.Context
         public DbSet<Administrador> Administradores { get; set;}
         public DbSet<Periferico> Perifericos { get; set; }
         public DbSet<Peca> Pecas { get; set; }
+        public DbSet<Acessorio> Acessorios { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
