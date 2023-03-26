@@ -73,5 +73,34 @@ namespace AttAnalise.Controllers
             }
         }
 
+
+        [HttpPost]
+        public IActionResult AdicionarAcessorio([FromBody] AcessorioRequest acessorio)
+        {
+            try
+            {
+                var responseBanco = ChecarConexaoBanco();
+                if (responseBanco != null)
+                    return responseBanco;
+
+                Acessorio NovoAcessorio = new Acessorio(acessorio.Nome, acessorio.Tipo, acessorio.Marca, acessorio.Modelo, acessorio.Valor);
+
+                _context.Acessorios.Add(NovoAcessorio);
+                _context.SaveChanges();
+
+                return Created("Acessório cadastrado com sucesso!", NovoAcessorio);
+            }
+            catch (ArgumentException argEx)
+            {
+                return StatusCode(400, new {Error= "Houve um erro com sua requisição. Por favor, verifique os seus dados!",
+                                            Mensagem = argEx.Message});
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!",
+                                            Mensagem = ex.Message});
+            }
+        }
+
     }
 }
