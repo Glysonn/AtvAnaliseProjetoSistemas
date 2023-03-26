@@ -7,8 +7,8 @@ namespace AttAnalise.Models
             get => _Arquitetura;
             set
             {
-                if (String.IsNullOrEmpty(value))
-                    throw new ArgumentException("A arquitetura não pode ser um campo vazio! Por favor, preencha o campo corretamente");
+                if(String.IsNullOrEmpty(value))
+                    throw new ArgumentException("A arquitetura não pode ser vazio! Por favor, preencha o campo corretamente");
                 else
                     _Arquitetura = value;
             }
