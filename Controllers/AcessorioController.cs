@@ -51,5 +51,27 @@ namespace AttAnalise.Controllers
             }
         }
 
+        [HttpGet("{codigo}")]
+        public IActionResult GetAcessorioById(int codigo)
+        {
+            try
+            {
+                var responseBanco = ChecarConexaoBanco();
+                if(responseBanco != null)
+                    return responseBanco;
+
+                var AcessorioBanco = _context.Acessorios.SingleOrDefault(a => a.Codigo == codigo);
+                if(AcessorioBanco == null)
+                    return NotFound($"Acessorio de codigo {codigo} não existe.");
+                
+                return Ok(AcessorioBanco);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!",
+                                            Mensagem = ex.Message});
+            }
+        }
+
     }
 }
