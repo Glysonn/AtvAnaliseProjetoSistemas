@@ -51,5 +51,27 @@ namespace AttAnalise.Controllers
             }
         }
 
+        [HttpGet("{codigo}")]
+        public IActionResult GetPecasById(int codigo)
+        {
+            try
+            {
+                var responseBanco = ChecarConexaoBanco();
+                if(responseBanco != null)
+                    return responseBanco;
+
+                var PecaBanco = _context.Pecas.SingleOrDefault(a => a.Codigo == codigo);
+                if(PecaBanco == null)
+                    return NotFound($"Peça de codigo {codigo} não existe.");
+                
+                return Ok(PecaBanco);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!",
+                                            Mensagem = ex.Message});
+            }
+        }
+
     }
 }
