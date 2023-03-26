@@ -147,5 +147,33 @@ namespace AttAnalise.Controllers
             }
 
         }
+        
+        [HttpDelete ("{codigo}")]
+        public IActionResult DeletarPerifericoById(int codigo)
+        {
+            try
+            {
+                var responseBanco = ChecarConexaoBanco();
+                if (responseBanco != null)
+                    return responseBanco;
+                
+                var PerifericoBanco = _context.Perifericos.SingleOrDefault(a => a.Codigo == codigo);
+                if (PerifericoBanco == null)
+                    return NotFound($"O periférico de código {codigo} não se encontra no sistema!");
+                
+                _context.Perifericos.Remove(PerifericoBanco);
+                _context.SaveChanges();
+
+                return NoContent();
+            }
+            catch (ArgumentException argEx)
+            {
+                return BadRequest(new {Error = "Aconteceu um erro com os dados enviados!", Mensagem = argEx.Message});
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
+            }
+        }
     }
 }
