@@ -12,18 +12,9 @@ namespace AttAnalise.Models.Requests
     public class UsuarioRequest
     {
         public int Id { get => _Id; set => _Id = value; }
-        public string Nome
-        {   get => _Nome;
-            set => _Nome = value;
-        }
-        public string Email
-        {   get => _Email;
-            set => _Email = value;
-        }
-        public string Senha
-        {   get => _Senha;
-            set => _Senha = value;
-        }
+        public string Nome { get => _Nome; set => _Nome = value; }
+        public string Email { get => _Email; set => _Email = value; }
+        public string Senha { get => _Senha; set => _Senha = value; }
         public TipoUsuario TipoUsuario { get => _TipoUsuario; set => _TipoUsuario = value; }
         
         
