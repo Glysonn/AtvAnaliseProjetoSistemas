@@ -27,5 +27,29 @@ namespace AttAnalise.Controllers
             return null;
         }
 
+        [HttpGet]
+        public IActionResult GetAcessorios()
+        {
+            try
+            {
+                // verifica se há algo de errado com a conexão do banco de dados
+                var responseBanco = ChecarConexaoBanco();
+                if (responseBanco != null)
+                    return responseBanco;
+
+                var AcessoriosBanco = _context.Pecas.ToList();
+
+                if (!AcessoriosBanco.Any())
+                    return NotFound("Não há nenhum acessório cadastrado no sistema!");
+
+                return Ok(AcessoriosBanco);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!",
+                                            Mensagem = ex.Message});
+            }
+        }
+
     }
 }
