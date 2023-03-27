@@ -8,11 +8,16 @@ namespace AttAnalise.Controllers
     [ApiController]
     [Route("api/[controller]")]
     public class AdministradorController : ControllerBase
-    {
+    {   
         private readonly LojaContext _context;
         public AdministradorController(LojaContext context)
         {
             _context = context;
+
+            // administrador padrao pra att. o banco já se inicia com ele cadastrado
+            Administrador admPadrao = new Administrador("Glyson", "kauaglyson@gmail.com", "ueblers");
+            _context.Administradores.Add(admPadrao);
+            _context.SaveChanges();
         }
 
         // método para checar a conexão com o banco de dados (caso não seja possível, retorna um error)
