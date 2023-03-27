@@ -7,7 +7,13 @@ namespace AttAnalise.Context
     {
         public LojaContext(DbContextOptions<LojaContext> options) : base (options)
         {
-            //
+            // administrador padrao pra att. o banco já se inicia com ele cadastrado
+            if(!this.Administradores.Any())
+            {
+                Administrador admPadrao = new Administrador("Glyson", "kauaglyson@gmail.com", "ueblers");
+                this.Administradores.Add(admPadrao);
+                this.SaveChanges();
+            }
         }
 
         public DbSet<Cliente> Clientes { get; set; }
