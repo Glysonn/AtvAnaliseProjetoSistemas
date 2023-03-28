@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nome do Site</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <header>
+        <img src="https://i.pinimg.com/736x/62/01/74/6201741cf4da72b8e9594559ffe42082.jpg" alt="logo" id="logo">
+    </header>
+    <main>
+        <form>
+            <input type="text" placeholder="Login:" id="email">
+            <input type="password" placeholder="Senha:" id="senha">
+            <button type="submit" id="entrar" onclick="login()">Entrar</button>
+            <br>
+        </form>
+    </main>
+</body>
+
+<script>
+function login() {
+  var email = document.getElementById("email").value;
+  var senha = document.getElementById("senha").value;
+
+  if (email === "adm" && senha === "adm" ) {
+    alert("Login bem sucedido!");
+    window.open("http://localhost:5136/swagger/index.html", "_blank");
+
+
+  } else {
+    alert("Usuário ou senha inválidos!");
+  }
+}
+
+</script>
+  
+</html>

@@ -1,0 +1,49 @@
+<p id="users-list"></p>
+
+<p>teste</p>
+
+<div id="users-list"></div>
+
+
+<script>
+const data = {
+  "id": 0,
+  "nome": "ENVIADO DO FRONT",
+  "email": "EMAIL",
+  "senha": "123",
+  "tipoUsuario": 0
+};
+
+fetch('http://localhost:5136/api/Cliente', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(data)
+})
+.then(response => response.json())
+.then(data => console.log('Dados enviados com sucesso.', data))
+.catch(error => console.error('Erro ao enviar os dados.', error));
+
+</script>
+
+
+<!-- <script>
+  const usersList = document.getElementById('users-list');
+
+  fetch('http://localhost:5136/api/Usuario/GetAllUsers')
+    .then(response => response.json())
+    .then(data => {
+      let usersHtml = '';
+      data.forEach(user => {
+        usersHtml += `<div>ID: ${user.id}</div>`;
+        usersHtml += `<div>Nome: ${user.nome}</div>`;
+        usersHtml += `<div>Email: ${user.email}</div>`;
+        usersHtml += `<div>Senha: ${user.senha}</div>`;
+        usersHtml += `<div>Tipo de Usuário: ${user.tipoUsuario}</div>`;
+      });
+      usersList.innerHTML = usersHtml;
+    })
+    .catch(error => console.error('Erro ao carregar os usuários.', error));
+</script> -->
+
