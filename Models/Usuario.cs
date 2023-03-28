@@ -35,7 +35,7 @@ namespace AttAnalise.Models
                 if(String.IsNullOrEmpty(value) || String.IsNullOrWhiteSpace(value))
                     throw new ArgumentException("A senha não pode ser vazia ou conter somente espaços em branco! Por favor, preencha o campo corretamente");
                 else
-                    _Senha = CriptografarSenha(value);
+                    _Senha = value;
             }
         }
         public TipoUsuario TipoUsuario { get => _TipoUsuario; set => _TipoUsuario = value; }
@@ -52,12 +52,12 @@ namespace AttAnalise.Models
             this.Id = id;
             this.Nome = nome;
             this.Email = email;
-            this.Senha = senha;
+            this.Senha = CriptografarSenha(senha);
             this.TipoUsuario = tipoUsuario;
         }
 
         // a criptografia não é das mais efetivas porém servirá para demonstração
-        private string CriptografarSenha(string senha)
+        public string CriptografarSenha(string senha)
         {
             using var sha256 = SHA256.Create();
             var bytes = Encoding.UTF8.GetBytes(senha);
@@ -65,25 +65,19 @@ namespace AttAnalise.Models
             return Convert.ToBase64String(hash);
         }
 
-        private bool VerificarSenha(string senha)
-        {
-            return (CriptografarSenha(senha) == this.Senha) ? true : false;
-        }
-        // nesse caso, como a cripto é simples, não faz muito sentido. Porém continua sendo
-        // uma boa prática restringir ao máximo o acesso à esse tipo de método
         public bool ConfirmarSenha(string senha)
         {
-            return VerificarSenha(senha);
+            return (CriptografarSenha(senha) == this._Senha);
         }
         
 
         public void AlterarSenha(string senhaAtual, string novaSenha)
         {
-            if (!VerificarSenha(senhaAtual))
+            if (!ConfirmarSenha(senhaAtual))
             {
                 throw new Exception ("Ops! A senha atual não coincide!");
             }
-            this.Senha = CriptografarSenha(novaSenha);
+            this.Senha = novaSenha;
         }
 
     }
