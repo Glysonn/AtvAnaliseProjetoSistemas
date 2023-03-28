@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using AttAnalise.Context;
+using AttAnalise.Models;
 
 namespace AttAnalise.Controllers
 {
@@ -58,6 +59,47 @@ namespace AttAnalise.Controllers
                 var todasAsListas = clientes.Concat(adms).ToList();
 
                 return Ok(todasAsListas);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new {Error = "Aconteceu um erro interno no servidor!", Mensagem = ex.Message});
+            }
+        }
+
+        [HttpPost]
+        public IActionResult LogInUsers(string email, string senha)
+        {
+            try
+            {
+                // verifica se há algo de errado com a conexão do banco de dados
+                var responseBanco = ChecarConexaoBanco();
+                if (responseBanco != null)
+                    return responseBanco;
+                    
+                var userAdm = _context.Administradores.FirstOrDefault( u => u.Email == email);
+                var userCliente = _context.Clientes.FirstOrDefault( c => c.Email == email);
+                Usuario user = null;
+
+                if (userAdm != null)
+                    user = userAdm;
+
+                if (userCliente != null)
+                    user = userCliente;
+
+                if (user == null)
+                    return NotFound("Email ou senha inválidos!");
+
+                senha = user.CriptografarSenha(senha);
+                var isSenha = user.ConfirmarSenha(senha);
+
+                if (isSenha)
+                    return Ok();
+                else
+                    return NotFound("Email ou senha inválidos!");
+            }
+            catch (ArgumentException argEx)
+            {
+                return BadRequest(new {Error = "Aconteceu um erro com os dados enviados!", Mensagem = argEx.Message});
             }
             catch (Exception ex)
             {
