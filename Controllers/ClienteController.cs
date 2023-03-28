@@ -87,6 +87,12 @@ namespace AttAnalise.Controllers
                 if (responseBanco != null)
                     return responseBanco;
 
+                // Verifica se já existe um usuário cadastrado com o mesmo email
+                var usuarioExistente = _context.Clientes.FirstOrDefault(u => u.Email == cliente.Email);
+
+                if (usuarioExistente != null)
+                    return BadRequest("Já existe um usuário cadastrado com esse email!");
+
                 Cliente NovoCliente = new Cliente(cliente.Nome, cliente.Email, cliente.Senha);
 
                 _context.Clientes.Add(NovoCliente);
