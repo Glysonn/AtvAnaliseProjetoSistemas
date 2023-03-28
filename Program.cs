@@ -3,6 +3,18 @@ using AttAnalise.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// configurando o CORS para permitir as requisições do frontend
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy",
+        builder => builder.WithOrigins("http://127.0.0.1:5500")
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials());
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -21,6 +33,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
 
