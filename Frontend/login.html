@@ -17,6 +17,7 @@
             <input type="password" placeholder="Senha:" id="senha">
             <button type="submit" id="entrar" onclick="login()">Entrar</button>
             <br>
+            <a href="./cadastrocliente.html">Não tem uma conta? Cadastre-se</a>
         </form>
     </main>
 </body>
@@ -28,7 +29,7 @@ function login() {
 
   if (email === "adm" && senha === "adm" ) {
     alert("Login bem sucedido!");
-    window.open("http://localhost:5136/swagger/index.html", "_blank");
+    window.open("inicio.html", "_blank");
 
 
   } else {

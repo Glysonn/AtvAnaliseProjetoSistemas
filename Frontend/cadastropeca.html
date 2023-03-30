@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <h1 style="text-align: center;">CADASTRO DE PEÇAS</h1>
+    <header>
+        <img src="https://i.pinimg.com/736x/62/01/74/6201741cf4da72b8e9594559ffe42082.jpg" alt="logo" id="logo">
+    </header>
+    <main>
+        <form>
+            <input type="text" placeholder="nome" id="nome">
+            <input type="text" placeholder="marca" id="marca">
+            <input type="text" placeholder="modelo" id="modelo">
+            <input type="text" placeholder="valor" id="valor">
+            <input type="text" placeholder="tipo" id="tipo">
+            <input type="text" placeholder="arquitetura" id="arquitetura">
+            <button type="submit" id="entrar" onclick="cadastrar()">Cadastro</button>
+            <br>
+        </form>
+    </main>
+</body>
+<script>
+function cadastrar()
+{
+    const data = {
+      "codigo": 0,
+      "nome": document.getElementById("nome").value,
+      "marca": document.getElementById("marca").value,
+      "modelo": document.getElementById("modelo").value,
+      "valor": document.getElementById("valor").value,
+      "tipo": document.getElementById("tipo").value,
+      "arquitetura": document.getElementById("arquitetura").value,
+    };
+    
+    fetch('http://localhost:5136/api/Peca', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => console.log('Dados enviados com sucesso.', data))
+    .then(window.open("inicio.html", "_blank"))
+    .catch(error => console.error('Erro ao enviar os dados.', error));
+}
+    
+    </script>
+</html>

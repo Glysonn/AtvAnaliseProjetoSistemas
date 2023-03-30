@@ -1,0 +1,36 @@
+
+<div>
+  <button><a href="cadastropeca.html">Cadastrar Peça</a></button>
+  <button><a href="cadastroproduto.html">Cadastrar Acessório</a></button>
+  <button><a href="cadastroproduto.html">Cadastrar Periférico</a></button>
+</div>
+
+<p id="product-list"></p>
+
+<div id="product-list"></div>
+
+
+<script>
+  const productList = document.getElementById('product-list');
+  let index = 1;
+  fetch('http://localhost:5136/api/Produto/GetAllProdutos')
+    .then(response => response.json())
+    .then(data => {
+      let ProductsHtml = '';
+      data.forEach(product => {
+        ProductsHtml += `<h1> Produto ${index} </h1>`;
+        ProductsHtml += `<div>Código: ${product.codigo}</div>`;
+        ProductsHtml += `<div>Nome: ${product.nome}</div>`;
+        ProductsHtml += `<div>Marca: ${product.marca}</div>`;
+        ProductsHtml += `<div>Modelo: ${product.modelo}</div>`;
+        ProductsHtml += `<div>Valor: ${product.valor}</div>`;
+        ProductsHtml += `<div>Tipo: ${product.tipo}</div>`;
+        ProductsHtml += `<div>Categoria: ${product.categoria}</div>`;
+        index++;
+      });
+      productList.innerHTML = ProductsHtml;
+      
+    })
+    .catch(error => console.error('Erro ao carregar os produtos.', error));
+</script>
+

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <h1 style="text-align: center;">CADASTRO DE CLIENTES</h1>
+    <header>
+        <img src="https://i.pinimg.com/736x/62/01/74/6201741cf4da72b8e9594559ffe42082.jpg" alt="logo" id="logo">
+    </header>
+    <main>
+        <form>
+            <input type="text" placeholder="nome" id="nome">
+            <input type="text" placeholder="email" id="email">
+            <input type="password" placeholder="senha" id="senha">
+            <button type="submit" id="entrar" onclick="cadastrar()">Cadastro</button>
+            <br>
+        </form>
+    </main>
+</body>
+<script>
+function cadastrar()
+{
+    const data = {
+      "id": 0,
+      "nome": document.getElementById("nome").value,
+      "email": document.getElementById("email").value,
+      "senha": document.getElementById("senha").value,
+      "tipoUsuario": 0
+    };
+    
+    fetch('http://localhost:5136/api/Cliente', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => console.log('Dados enviados com sucesso.', data))
+    .catch(error => console.error('Erro ao enviar os dados.', error));
+}
+    
+    </script>
+</html>
