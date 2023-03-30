@@ -17,9 +17,10 @@
             <input type="text" placeholder="nome" id="nome">
             <input type="text" placeholder="marca" id="marca">
             <input type="text" placeholder="modelo" id="modelo">
-            <input type="text" placeholder="valor" id="valor">
+            <input type="number" lang="en-US" placeholder="valor" id="valor">
             <input type="text" placeholder="tipo" id="tipo">
-            <input type="text" placeholder="é games?" id="isGamer">
+            <label for="isGamer">É gamer?</label>
+            <input type="checkbox" value="true" id="isGamer">
             <button type="submit" id="entrar" onclick="cadastrar()">Cadastro</button>
             <br>
         </form>
@@ -35,8 +36,10 @@ function cadastrar()
       "modelo": document.getElementById("modelo").value,
       "valor": document.getElementById("valor").value,
       "tipo": document.getElementById("tipo").value,
-      "isGamer": document.getElementById("isGamer").value,
+      "isGamer": document.getElementById("isGamer").checked ? true : false
     };
+
+    console.log(data);
     
     fetch('http://localhost:5136/api/Periferico', {
       method: 'POST',
